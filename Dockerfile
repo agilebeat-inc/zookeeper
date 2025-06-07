@@ -8,6 +8,15 @@
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 
+ARG VCS_REF
+ARG BUILD_DATE
+
+# Metadata
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/agilebeat/zookeeper" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.docker.dockerfile="/Dockerfile"
+
 ARG DOCKER_REGISTRY
 FROM  ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}openjdk:11-jdk
 RUN mkdir /zu

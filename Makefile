@@ -20,4 +20,4 @@ docker_push:
 	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
 
 test:
-	docker run --rm --name $(DOCKER_IMAGE)-test $(DOCKER_IMAGE):$(DOCKER_TAG) zkServer.sh version
+	docker run --rm $(DOCKER_IMAGE):$(DOCKER_TAG) zkServer.sh version

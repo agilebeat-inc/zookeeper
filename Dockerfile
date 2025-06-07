@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Dell Inc., or its subsidiaries. All Rights Reserved.
+# Copyright (c) 2025 Agilebeat Inc., or its subsidiaries. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,12 +11,6 @@
 ARG VCS_REF
 ARG BUILD_DATE
 
-# Metadata
-LABEL org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/agilebeat/zookeeper" \
-      org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.docker.dockerfile="/Dockerfile"
-
 ARG DOCKER_REGISTRY
 FROM  ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}openjdk:11-jdk
 RUN mkdir /zu
@@ -24,6 +18,13 @@ COPY zu /zu
 WORKDIR /zu
 RUN ./gradlew --console=verbose --info shadowJar
 
+# Metadata
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/agilebeat-inc/zookeeper" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.docker.dockerfile="/Dockerfile"
+
+ARG DOCKER_REGISTRY
 FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:3.9.3
 COPY bin /usr/local/bin
 RUN chmod +x /usr/local/bin/*

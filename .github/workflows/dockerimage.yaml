@@ -19,7 +19,7 @@ jobs:
         GIT_BRANCH=${GITHUB_REF#refs/heads/} make docker_build
         GIT_BRANCH=${GITHUB_REF#refs/heads/} make test
     - name: Docker meta
-      if: ${{ startsWith(github.ref, 'refs/heads/m') || startsWith(github.ref, 'refs/heads/[0-9]') }}
+      if: ${{ startsWith(github.ref, 'refs/heads/m') || /^refs\/heads\/[0-9]/.test(github.ref) }}
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
@@ -27,23 +27,23 @@ jobs:
         tag-semver: |
           {{raw}}
     - name: Set up QEMU
-      if: ${{ startsWith(github.ref, 'refs/heads/m') || startsWith(github.ref, 'refs/heads/[0-9]') }}
+      if: ${{ startsWith(github.ref, 'refs/heads/m') || /^refs\/heads\/[0-9]/.test(github.ref) }}
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
-      if: ${{ startsWith(github.ref, 'refs/heads/m') || startsWith(github.ref, 'refs/heads/[0-9]') }}
+      if: ${{ startsWith(github.ref, 'refs/heads/m') || /^refs\/heads\/[0-9]/.test(github.ref) }}
       uses: docker/setup-buildx-action@v1
     - name: install cosign
       uses: sigstore/cosign-installer@main
       with:
         cosign-release: 'v1.13.1'
     - name: Login to DockerHub
-      if: ${{ startsWith(github.ref, 'refs/heads/m') || startsWith(github.ref, 'refs/heads/[0-9]') }}
+      if: ${{ startsWith(github.ref, 'refs/heads/m') || /^refs\/heads\/[0-9]/.test(github.ref) }}
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and publish multi-arch kubectl container
-      if: ${{ startsWith(github.ref, 'refs/heads/m') || startsWith(github.ref, 'refs/heads/[0-9]') }}
+      if: ${{ startsWith(github.ref, 'refs/heads/m') || /^refs\/heads\/[0-9]/.test(github.ref) }}
       uses: docker/build-push-action@v2
       with:
         platforms: linux/amd64,linux/s390x,linux/arm64,linux/ppc64le
@@ -53,7 +53,7 @@ jobs:
           ${{ github.ref == 'refs/heads/main' && 'agilebeat/zookeeper:latest' || '' }}
         labels: ${{ steps.docker_meta.outputs.labels }}
     - name: Sign image only on version branches
-      if: ${{ startsWith(github.ref, 'refs/heads/[0-9]') }}
+      if: ${{ /^refs\/heads\/[0-9]/.test(github.ref) }}
       run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${TAGS}
       env:
         TAGS: ${{ steps.docker_meta.outputs.tags }}

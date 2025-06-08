@@ -10,9 +10,8 @@
 
 ARG VCS_REF
 ARG BUILD_DATE
-
 ARG DOCKER_REGISTRY
-FROM  ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}25-jdk-oraclelinux8
+FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}amazoncorretto:11.0.27
 RUN mkdir /zu
 COPY zu /zu
 WORKDIR /zu
@@ -24,6 +23,9 @@ LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.docker.dockerfile="/Dockerfile"
 
+ARG VCS_REF
+ARG BUILD_DATE
+ARG DOCKER_REGISTRY
 ARG DOCKER_REGISTRY
 FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:3.9.3
 COPY bin /usr/local/bin

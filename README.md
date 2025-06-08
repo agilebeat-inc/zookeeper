@@ -18,14 +18,10 @@ This container provides the basic image zookeeper which can be used by Zookeeper
 ## Build
 `make docker_build`
 
-## Instructions to trigger a new agilebeat/zookeeper:<version> build
+## Triger build
 
-1. Create new branch
+'3.9.2'
 
-- `git checkout -b <version>`
-- Edit readme file to add branch name in it (so the HEAD is different than main)
-- Add and commit: `git add README.md'
-- Commit change: `git commit -m '<version>'`
-- Push to the github: `git push --set-upstream origin <version>`
+
 
 

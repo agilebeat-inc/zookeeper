@@ -54,7 +54,7 @@ jobs:
         labels: ${{ steps.docker_meta.outputs.labels }}
     - name: Sign image only on version branches
       if: ${{ startsWith(github.ref, 'refs/heads/0') || startsWith(github.ref, 'refs/heads/1') || startsWith(github.ref, 'refs/heads/2') || startsWith(github.ref, 'refs/heads/3') || startsWith(github.ref, 'refs/heads/4') || startsWith(github.ref, 'refs/heads/5') || startsWith(github.ref, 'refs/heads/6') || startsWith(github.ref, 'refs/heads/7') || startsWith(github.ref, 'refs/heads/8') || startsWith(github.ref, 'refs/heads/9') }}
-      run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${TAGS}
+      run: cosign sign --yes --oidc-issuer https://token.actions.githubusercontent.com ${TAGS}
       env:
         TAGS: ${{ steps.docker_meta.outputs.tags }}
         COSIGN_EXPERIMENTAL: 1

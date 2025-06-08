@@ -9,7 +9,7 @@
 #
 
 ARG DOCKER_REGISTRY
-ARG ZOOKEEPER_VERSION="latest"
+ARG ZOOKEEPER_VERSION
 FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}eclipse-temurin:11-jdk
 RUN mkdir /zu
 COPY zu /zu
@@ -17,7 +17,7 @@ WORKDIR /zu
 RUN ./gradlew --console=verbose --info shadowJar
 
 ARG DOCKER_REGISTRY
-ARG ZOOKEEPER_VERSION="latest"
+ARG ZOOKEEPER_VERSION
 FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:${ZOOKEEPER_VERSION}
 COPY bin /usr/local/bin
 RUN chmod +x /usr/local/bin/*

@@ -27,7 +27,7 @@ ARG VCS_REF
 ARG BUILD_DATE
 ARG DOCKER_REGISTRY
 ARG DOCKER_REGISTRY
-FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:3.9.3
+FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:3.7.2
 COPY bin /usr/local/bin
 RUN chmod +x /usr/local/bin/*
 COPY --from=0 /zu/build/libs/zu.jar /opt/libs/

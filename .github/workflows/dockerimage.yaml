@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build and test kubectl container
+    - name: Build and test pravega/zookeeper container
       run: |
         GIT_BRANCH=${GITHUB_REF#refs/heads/} make docker_build
         GIT_BRANCH=${GITHUB_REF#refs/heads/} make test
@@ -23,7 +23,7 @@ jobs:
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-        images: lachlanevenson/k8s-kubectl
+        images: agilebeat/zookeeper
         tag-semver: |
           {{raw}}
     - name: Set up QEMU

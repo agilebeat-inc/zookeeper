@@ -1,4 +1,4 @@
-name: Build and Publish kubectl container
+name: Build and Publish zookeeper container for pravega pravega/zookeeper-operator
 
 on:
   push:
@@ -50,7 +50,7 @@ jobs:
         push: true
         tags: |
           ${{ github.ref != 'refs/heads/main' && steps.docker_meta.outputs.tags || '' }}
-          ${{ github.ref == 'refs/heads/main' && 'lachlanevenson/k8s-kubectl:latest' || '' }}
+          ${{ github.ref == 'refs/heads/main' && 'agilebeat/zookeeper:latest' || '' }}
         labels: ${{ steps.docker_meta.outputs.labels }}
     - name: Sign image only on version branches
       if: ${{ startsWith(github.ref, 'refs/heads/v') }}

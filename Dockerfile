@@ -8,26 +8,16 @@
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 
-ARG VCS_REF
-ARG BUILD_DATE
 ARG DOCKER_REGISTRY
-ARG ZOOKEEPER_VERSION
+ARG ZOOKEEPER_VERSION="latest"
 FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}amazoncorretto:11.0.27
 RUN mkdir /zu
 COPY zu /zu
 WORKDIR /zu
 RUN ./gradlew --console=verbose --info shadowJar
 
-# Metadata
-LABEL org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/agilebeat-inc/zookeeper" \
-      org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.docker.dockerfile="/Dockerfile"
-
-ARG VCS_REF
-ARG BUILD_DATE
 ARG DOCKER_REGISTRY
-ARG ZOOKEEPER_VERSION
+ARG ZOOKEEPER_VERSION="latest"
 FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:${ZOOKEEPER_VERSION}
 COPY bin /usr/local/bin
 RUN chmod +x /usr/local/bin/*
@@ -35,3 +25,12 @@ COPY --from=0 /zu/build/libs/zu.jar /opt/libs/
 
 RUN apt-get -q update && \
     apt-get install -y dnsutils curl procps socat
+
+
+ARG VCS_REF
+ARG BUILD_DATE
+# Metadata
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/agilebeat-inc/zookeeper" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.docker.dockerfile="/Dockerfile"

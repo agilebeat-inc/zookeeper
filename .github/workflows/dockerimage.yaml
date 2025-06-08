@@ -1,4 +1,4 @@
-name: Build and Publish zookeeper container for pravega pravega/zookeeper-operator
+name: Build and Publish zookeeper container for the pravega/zookeeper-operator
 
 on:
   push:

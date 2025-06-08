@@ -10,11 +10,16 @@ else
 endif
 
 docker_build:
-	@echo "Building image $(DOCKER_IMAGE):$(DOCKER_TAG) with ZOOKEEPER_VERSION=$(DOCKER_TAG)"
-	@docker build \
+	@echo "Building image $(DOCKER_IMAGE):$(DOCKER_TAG) with ZK_VERSION=$(DOCKER_TAG)"
+	@echo "docker build --debug \
+	  --build-arg ZK_VERSION=$(DOCKER_TAG) \
 	  --build-arg VCS_REF=`git rev-parse --short HEAD` \
 	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-	  --build-arg ZOOKEEPER_VERSION=$(DOCKER_TAG) \
+	  -t $(DOCKER_IMAGE):$(DOCKER_TAG) ."
+	@docker build --debug \
+	  --build-arg ZK_VERSION=$(DOCKER_TAG) \
+	  --build-arg VCS_REF=`git rev-parse --short HEAD` \
+	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 	  -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
 	  
 docker_push:

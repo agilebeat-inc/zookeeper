@@ -9,19 +9,20 @@
 #
 
 ARG DOCKER_REGISTRY
-ARG ZOOKEEPER_VERSION
-FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}eclipse-temurin:11-jdk
+ARG ZK_VERSION=latest
+
+# Stage 1
+FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}eclipse-temurin:11-jdk AS builder
 RUN mkdir /zu
 COPY zu /zu
 WORKDIR /zu
 RUN ./gradlew --console=verbose --info shadowJar
 
-ARG DOCKER_REGISTRY
-ARG ZOOKEEPER_VERSION
-FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:${ZOOKEEPER_VERSION}
+# stage 2
+FROM ${DOCKER_REGISTRY:+$DOCKER_REGISTRY/}zookeeper:${ZK_VERSION} AS runner
 COPY bin /usr/local/bin
 RUN chmod +x /usr/local/bin/*
-COPY --from=0 /zu/build/libs/zu.jar /opt/libs/
+COPY --from=builder /zu/build/libs/zu.jar /opt/libs/
 
 RUN apt-get -q update && \
     apt-get install -y dnsutils curl procps socat
